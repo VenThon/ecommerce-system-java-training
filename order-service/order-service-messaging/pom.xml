@@ -10,6 +10,12 @@
     </parent>
 
     <artifactId>order-service-messaging</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>order-application-service</artifactId>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
