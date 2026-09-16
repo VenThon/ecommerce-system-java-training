@@ -13,6 +13,7 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>common-domain</artifactId>
