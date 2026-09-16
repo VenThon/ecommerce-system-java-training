@@ -1,8 +1,8 @@
-package com.venthon.ecommerce.persistence.adapter;
+package com.venthon.ecommerce.order.persistence.adapter;
 
 import com.venthon.ecommerce.domain.entity.Order;
 import com.venthon.ecommerce.domain.port.output.OrderRepository;
-import com.venthon.ecommerce.persistence.repository.OrderJpaRepository;
+import com.venthon.ecommerce.order.persistence.repository.OrderJpaRepository;
 
 public class OrderRepositoryAdapter implements OrderRepository {
   private final OrderJpaRepository orderJpaRepository;

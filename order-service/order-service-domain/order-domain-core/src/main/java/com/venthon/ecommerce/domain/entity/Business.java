@@ -5,6 +5,8 @@ import com.example.ecommerce.domain.valueobject.BusinessId;
 
 import java.util.List;
 
+//This file after created final and active run generate builder and getter by Friday the date 11 September 2026
+
 public class Business extends AggregaeRoot<BusinessId> {
 
     private final List<Product> products;
