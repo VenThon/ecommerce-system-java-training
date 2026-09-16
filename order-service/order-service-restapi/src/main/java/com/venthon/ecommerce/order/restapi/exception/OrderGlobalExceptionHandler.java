@@ -3,6 +3,8 @@ package com.venthon.ecommerce.order.restapi.exception;
 import com.venthon.ecommerce.restapi.exception.GlobalExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+// Extends Form GlobalExceptionHandler error
 @RestControllerAdvice
 public class OrderGlobalExceptionHandler extends GlobalExceptionHandler {
 }
