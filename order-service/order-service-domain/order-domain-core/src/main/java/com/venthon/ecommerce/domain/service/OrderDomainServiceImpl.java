@@ -1,4 +1,4 @@
-package com.venthon.ecommerce.domain;
+package com.venthon.ecommerce.domain.service;
 
 import com.venthon.ecommerce.domain.entity.Business;
 import com.venthon.ecommerce.domain.entity.Order;
@@ -10,7 +10,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public class OrderDomainServiceImpl implements OrderDomainService{
+public class OrderDomainServiceImpl implements OrderDomainService {
     @Override
     public OrderCreatedEvent validateAndInitiateOrder(Order order, Business business) {
         // validateBusiness(business);

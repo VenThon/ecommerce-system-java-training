@@ -3,13 +3,17 @@ package com.venthon.ecommerce.order.persistence.adapter;
 import com.venthon.ecommerce.domain.entity.Order;
 import com.venthon.ecommerce.domain.port.output.OrderRepository;
 import com.venthon.ecommerce.order.persistence.repository.OrderJpaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@RequiredArgsConstructor
 public class OrderRepositoryAdapter implements OrderRepository {
-  private final OrderJpaRepository orderJpaRepository;
+    private final OrderJpaRepository orderJpaRepository;
 
-    public OrderRepositoryAdapter(OrderJpaRepository orderJpaRepository) {
-        this.orderJpaRepository = orderJpaRepository;
-    }
+    //    public OrderRepositoryAdapter(OrderJpaRepository orderJpaRepository) {
+    //        this.orderJpaRepository = orderJpaRepository;
+    //    }
 
     @Override
     public Order saveOrder(Order order) {

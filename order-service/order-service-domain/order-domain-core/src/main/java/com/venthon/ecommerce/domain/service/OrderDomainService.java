@@ -1,4 +1,4 @@
-package com.venthon.ecommerce.domain;
+package com.venthon.ecommerce.domain.service;
 
 import com.venthon.ecommerce.domain.entity.Business;
 import com.venthon.ecommerce.domain.entity.Order;
