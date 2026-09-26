@@ -15,15 +15,18 @@ import java.util.UUID;
 @Table(name = "order_items")
 public class OrderItemEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @ManyToOne
+    private OrderEntity order;
+
     private UUID productId;
 
     private Integer quantity;
     private BigDecimal price;
     private BigDecimal subTotal;
 
-    @ManyToOne
-     private OrderEntity order;
+
 }

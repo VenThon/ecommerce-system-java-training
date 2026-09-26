@@ -5,11 +5,15 @@ import com.example.ecommerce.domain.valueobject.CustomerId;
 
 public class Customer extends AggregaeRoot<CustomerId> {
     private final String username;
-    private  final String familyName;
-    private  final  String givenName;
+    private final String familyName;
+    private final String givenName;
 
-
-    //Code Generate by Getter
+    private Customer(Builder builder) {
+        super.setId(builder.id);
+        username = builder.username;
+        familyName = builder.familyName;
+        givenName = builder.givenName;
+    }
 
     public String getUsername() {
         return username;
@@ -23,16 +27,10 @@ public class Customer extends AggregaeRoot<CustomerId> {
         return givenName;
     }
 
-
-    // Code Generate by builder
-
-    private Customer(Builder builder) {
-        // id = builder.id;
-        super.setId(builder.id);
-        username = builder.username;
-        familyName = builder.familyName;
-        givenName = builder.givenName;
+    public static Builder builder() {
+        return new Builder();
     }
+
 
     public static final class Builder {
         private CustomerId id;
@@ -71,7 +69,5 @@ public class Customer extends AggregaeRoot<CustomerId> {
             return new Customer(this);
         }
     }
-
-
 
 }

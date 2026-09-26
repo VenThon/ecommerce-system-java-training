@@ -32,15 +32,12 @@ public record Money(BigDecimal amount ) {
         return new Money(setScale(this.amount.add(money.getAmount())));
     }
 
-
-
     //ដកលុយ
     public Money subtract(Money money) {
         return new  Money(setScale(this.amount.subtract(money.getAmount())));
     }
 
     //គុណទឹកលុយតាមចំនួនទឹកលុយ
-
     public Money multiply(int multiplier) {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
     }

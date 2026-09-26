@@ -4,20 +4,19 @@ import com.example.ecommerce.domain.entity.BaseEntity;
 import com.example.ecommerce.domain.valueobject.Money;
 import com.example.ecommerce.domain.valueobject.OrderId;
 import com.venthon.ecommerce.domain.valueobject.OrderItemId;
+import lombok.Getter;
 
+@Getter
 public class OrderItem extends BaseEntity<OrderItemId> {
 
     // ផ្ទុកព័ត៌មានជាប្រវត្ដិរបស់ product ដែលមិនអាចកែប្រែបាន (historic snapshot)
     private final Product product;
-
     private final Integer quantity;
-
     private final Money price;
-
     private final Money subTotal;
-
     // can change after order has been created
     private OrderId orderId;
+
 
     private OrderItem(Builder builder) {
         super.setId(builder.id);
@@ -28,21 +27,16 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         orderId = builder.orderId;
     }
 
-
     // initialize order item
     void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
         this.orderId = orderId;
         super.setId(orderItemId);
     }
-
-
-    // តើតម្លៃត្រឹមត្រូវដែរឬទេ?
     boolean isPriceValid() {
         return price.isGreaterThanZero() &&
                 price.equals(product.getPrice()) &&
                 price.multiply(quantity).equals(subTotal);
     }
-
 
     public Product getProduct() {
         return product;
@@ -68,7 +62,6 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         return new Builder();
     }
 
-
     public static final class Builder {
         private OrderItemId id;
         private Product product;
@@ -79,6 +72,8 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
         private Builder() {
         }
+
+
 
         public Builder id(OrderItemId val) {
             id = val;

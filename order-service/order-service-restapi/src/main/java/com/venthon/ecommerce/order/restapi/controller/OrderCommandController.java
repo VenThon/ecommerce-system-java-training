@@ -28,20 +28,20 @@ public class OrderCommandController {
      private  OrderWebMapper orderWebMapper;
 
 
- @ResponseStatus(HttpStatus.CREATED)
-     @PostMapping
-     public OrderCreateResponse createOrder(
-             @Valid @RequestBody OrderCreateRequest orderCreateRequest
-     ){
+     @ResponseStatus(HttpStatus.CREATED)
+         @PostMapping
+         public OrderCreateResponse createOrder(
+                 @Valid @RequestBody OrderCreateRequest orderCreateRequest
+         ){
 
-      // Mapping logic
-      CreateOrderCommand createOrderCommand = orderWebMapper
-              .orderCreateRequestToCreateOrderCommand(orderCreateRequest);
+          // Mapping logic
+          CreateOrderCommand createOrderCommand = orderWebMapper
+                  .orderCreateRequestToCreateOrderCommand(orderCreateRequest);
 
-      // UseCase logic
-      CreateOrderResult createOrderResult = createOrderUseCase.execute(createOrderCommand);
+          // UseCase logic
+          CreateOrderResult createOrderResult = createOrderUseCase.execute(createOrderCommand);
 
-      // Mapping logic
-      return orderWebMapper.createOrderResultToOrderCreateResponse(createOrderResult);
+          // Mapping logic
+          return orderWebMapper.createOrderResultToOrderCreateResponse(createOrderResult);
      }
 }

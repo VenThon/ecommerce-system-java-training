@@ -14,41 +14,15 @@ import java.util.UUID;
 // Immutable attributes មិនអាចផ្លាស់ប្ដូរព័ត៌មានបានទេ
 public class Order extends AggregaeRoot<OrderId> {
 
-    // Can't change after order has been created
     private final CustomerId customerId;
-
-    // Can't change after order has been created
     private final BusinessId businessId;
-
-    // Can't change after order has been created
     private final StreetAddress deliveryAddress;
-
-    // Can't change after order has been created
     private final Money price;
-
     private final List<OrderItem> items;
 
-    // អាចកែប្រែបានបន្ទាប់ពីបង្កើត order entity រួច
     private TrackingId trackingId;
     private OrderStatus orderStatus;
     private List<String> failureMessages;
-
-
-    private Order(Builder builder) {
-        super.setId(builder.id);
-        customerId = builder.customerId;
-        businessId = builder.businessId;
-        deliveryAddress = builder.deliveryAddress;
-        price = builder.price;
-        items = builder.items;
-        trackingId = builder.trackingId;
-        orderStatus = builder.orderStatus;
-        failureMessages = builder.failureMessages;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
 
     public void validateOrder() {
         validateInitialOrder();
@@ -56,6 +30,56 @@ public class Order extends AggregaeRoot<OrderId> {
         validateItemsPrice();
     }
 
+    private void validateInitialOrder() {
+        if (orderStatus != null || super.getId() != null) {
+            throw new OrderDomainException("Order is not in correct status for initialization");
+        }
+    }
+
+    private void validateTotalPrice() {
+        if (price == null || !price.isGreaterThanZero()) {
+            throw new OrderDomainException("Total price must be greater than zero");
+        }
+    }
+
+    private void validateItemPrice(OrderItem orderItem) {
+        if (!orderItem.isPriceValid()) {
+            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() +
+                    " is not valid for product: " + orderItem.getProduct().getId().value());
+        }
+    }
+    private void validateItemsPrice() {
+        Money orderItemsTotalPrice = items.stream()
+                .map(orderItem -> {
+                    validateItemPrice(orderItem);
+                    return orderItem.getSubTotal();
+                })
+                .reduce(Money.ZERO, Money::add);
+
+        if (!price.equals(orderItemsTotalPrice)) {
+            throw new OrderDomainException("Total price: " + price.getAmount()
+                    + " is not equal to order items total price: " + orderItemsTotalPrice.getAmount());
+        }
+    }
+
+    private void initializeOrderItems() {
+        long itemCount = 1;
+        for (OrderItem item : items) {
+            item.initializeOrderItem(super.getId(), new OrderItemId(itemCount++));
+        }
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if (failureMessages != null && this.failureMessages != null) {
+            this.failureMessages.addAll(
+                    failureMessages.stream().filter(message -> !message.isBlank()).toList()
+            );
+        }
+
+        if (this.failureMessages == null) {
+            this.failureMessages = failureMessages;
+        }
+    }
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));
         trackingId = new TrackingId(UUID.randomUUID());
@@ -93,61 +117,59 @@ public class Order extends AggregaeRoot<OrderId> {
         updateFailureMessages(failureMessages);
     }
 
-    private void validateInitialOrder() {
-        if (orderStatus != null || super.getId() != null) {
-            throw new OrderDomainException("Order is not in correct status for initialization");
-        }
+
+    public CustomerId getCustomerId() {
+        return customerId;
     }
 
-    private void validateTotalPrice() {
-        if (price == null || !price.isGreaterThanZero()) {
-            throw new OrderDomainException("Total price must be greater than zero");
-        }
+    public BusinessId getBusinessId() {
+        return businessId;
     }
 
-    private void validateItemPrice(OrderItem orderItem) {
-        if (!orderItem.isPriceValid()) {
-            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount() +
-                    " is not valid for product: " + orderItem.getProduct().getId().value());
-        }
+    public StreetAddress getDeliveryAddress() {
+        return deliveryAddress;
     }
 
-    private void validateItemsPrice() {
-        Money orderItemsTotalPrice = items.stream()
-                .map(orderItem -> {
-                    validateItemPrice(orderItem);
-                    return orderItem.getSubTotal();
-                })
-                .reduce(Money.ZERO, Money::add);
-
-        if (!price.equals(orderItemsTotalPrice)) {
-            throw new OrderDomainException("Total price: " + price.getAmount()
-                    + " is not equal to order items total price: " + orderItemsTotalPrice.getAmount());
-        }
+    public Money getPrice() {
+        return price;
     }
 
-    private void initializeOrderItems() {
-        long itemCount = 1;
-        for (OrderItem item : items) {
-            item.initializeOrderItem(super.getId(), new OrderItemId(itemCount++));
-        }
+    public List<OrderItem> getItems() {
+        return items;
     }
 
-    private void updateFailureMessages(List<String> failureMessages) {
-        if (failureMessages != null && this.failureMessages != null) {
-            this.failureMessages.addAll(
-                    failureMessages.stream().filter(message -> !message.isBlank()).toList()
-            );
-        }
-
-        if (this.failureMessages == null) {
-            this.failureMessages = failureMessages;
-        }
+    public TrackingId getTrackingId() {
+        return trackingId;
     }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public List<String> getFailureMessages() {
+        return failureMessages;
+    }
+
+    private Order(Builder builder) {
+        super.setId(builder.id);
+        customerId = builder.customerId;
+        businessId = builder.businessId;
+        deliveryAddress = builder.deliveryAddress;
+        price = builder.price;
+        items = builder.items;
+        trackingId = builder.trackingId;
+        orderStatus = builder.orderStatus;
+        failureMessages = builder.failureMessages;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
 
     public static final class Builder {
+        public CustomerId customerId;
         private OrderId id;
-        private CustomerId customerId;
         private BusinessId businessId;
         private StreetAddress deliveryAddress;
         private Money price;
@@ -161,11 +183,6 @@ public class Order extends AggregaeRoot<OrderId> {
 
         public Builder id(OrderId val) {
             id = val;
-            return this;
-        }
-
-        public Builder customerId(CustomerId val) {
-            customerId = val;
             return this;
         }
 
