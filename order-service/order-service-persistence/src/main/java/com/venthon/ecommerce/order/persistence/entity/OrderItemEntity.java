@@ -13,10 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "order_items")
+@IdClass(OrderItemIdEntity.class)
 public class OrderItemEntity {
     @Id
     private Integer id;
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Id
     @ManyToOne

@@ -25,11 +25,13 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class CreateOrderUseCase {
+
     private final OrderDomainService orderDomainService;
     private final OrderDomainMapper orderDomainMapper;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final BusinessRepository businessRepository;
+
     public CreateOrderResult execute(CreateOrderCommand createOrderCommand){
         log.info("executing CreateOrderUseCase: {}", createOrderCommand);
 
@@ -49,7 +51,7 @@ public class CreateOrderUseCase {
                 .products(products)
                 .build();
 
-        businessRepository.findBusiness(business)
+        business = businessRepository.findBusiness(business)
                 .orElseThrow(() -> new OrderDomainException("Could not fine business with ID: " + createOrderCommand.businessId()));
 
         log.info("Found business: {}", business);
@@ -57,8 +59,10 @@ public class CreateOrderUseCase {
 
         // invoke order domain login
         Order order = orderDomainMapper.createOrderCommandToOrder(createOrderCommand);
+        //        log.info("Order price: {}", order.getPrice().getAmount());
+
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, business);
-        log.info("Order created: {}", orderCreatedEvent.getOrder().getId());
+        log.info("Order created event: {}", orderCreatedEvent.getOrder().getId());
 
         // save order to database
         Order saveOrder = orderRepository.saveOrder(order);

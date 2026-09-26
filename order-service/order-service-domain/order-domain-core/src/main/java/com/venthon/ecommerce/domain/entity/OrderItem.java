@@ -3,39 +3,32 @@ package com.venthon.ecommerce.domain.entity;
 import com.example.ecommerce.domain.entity.BaseEntity;
 import com.example.ecommerce.domain.valueobject.Money;
 import com.example.ecommerce.domain.valueobject.OrderId;
-import com.venthon.ecommerce.domain.valueobject.OrderItemId;
+import com.example.ecommerce.domain.valueobject.OrderItemId;
 import lombok.Getter;
 
 @Getter
 public class OrderItem extends BaseEntity<OrderItemId> {
 
-    // ផ្ទុកព័ត៌មានជាប្រវត្ដិរបស់ product ដែលមិនអាចកែប្រែបាន (historic snapshot)
+    private OrderId orderId;
+
     private final Product product;
     private final Integer quantity;
     private final Money price;
     private final Money subTotal;
-    // can change after order has been created
-    private OrderId orderId;
 
-
-    private OrderItem(Builder builder) {
-        super.setId(builder.id);
-        product = builder.product;
-        quantity = builder.quantity;
-        price = builder.price;
-        subTotal = builder.subTotal;
-        orderId = builder.orderId;
-    }
-
-    // initialize order item
-    void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
-        this.orderId = orderId;
-        super.setId(orderItemId);
-    }
     boolean isPriceValid() {
         return price.isGreaterThanZero() &&
                 price.equals(product.getPrice()) &&
                 price.multiply(quantity).equals(subTotal);
+    }
+
+    public void initializeOrderItem(OrderId orderId, OrderItemId orderItemId){
+        this.orderId = orderId;
+        super.setId(orderItemId);
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
     }
 
     public Product getProduct() {
@@ -54,8 +47,13 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         return subTotal;
     }
 
-    public OrderId getOrderId() {
-        return orderId;
+    private OrderItem(Builder builder) {
+        super.setId(builder.id);
+        orderId = builder.orderId;
+        product = builder.product;
+        quantity = builder.quantity;
+        price = builder.price;
+        subTotal = builder.subTotal;
     }
 
     public static Builder builder() {
@@ -64,19 +62,22 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
     public static final class Builder {
         private OrderItemId id;
+        private OrderId orderId;
         private Product product;
         private Integer quantity;
         private Money price;
         private Money subTotal;
-        private OrderId orderId;
 
         private Builder() {
         }
 
-
-
         public Builder id(OrderItemId val) {
             id = val;
+            return this;
+        }
+
+        public Builder orderId(OrderId val) {
+            orderId = val;
             return this;
         }
 
@@ -97,11 +98,6 @@ public class OrderItem extends BaseEntity<OrderItemId> {
 
         public Builder subTotal(Money val) {
             subTotal = val;
-            return this;
-        }
-
-        public Builder orderId(OrderId val) {
-            orderId = val;
             return this;
         }
 

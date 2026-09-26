@@ -20,7 +20,8 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
 
     @Override
     public Optional<Customer> findCustomer(UUID customerId) {
-        return customerJpaRepository.findById(customerId)
+        return customerJpaRepository
+                .findById(customerId)
                 .map(customerPersistenceMapper::customerEntityToCustomer);
     }
 

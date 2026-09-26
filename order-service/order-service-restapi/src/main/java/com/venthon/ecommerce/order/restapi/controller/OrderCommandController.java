@@ -14,23 +14,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-//@RequiredArgsConstructor
-
+@RequiredArgsConstructor
 
 //Date Friday 19-09-20 learn MapStruct
 public class OrderCommandController {
 
      //Declare required dependency
-    @Resource
-     private CreateOrderUseCase createOrderUseCase;
-
-    @Resource
-     private  OrderWebMapper orderWebMapper;
+     private final CreateOrderUseCase createOrderUseCase;
+     private final OrderWebMapper orderWebMapper;
 
 
-     @ResponseStatus(HttpStatus.CREATED)
-         @PostMapping
-         public OrderCreateResponse createOrder(
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public OrderCreateResponse createOrder(
                  @Valid @RequestBody OrderCreateRequest orderCreateRequest
          ){
 

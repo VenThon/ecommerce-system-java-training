@@ -1,7 +1,9 @@
 package com.venthon.ecommerce.order.persistence.mapper;
 
+import com.example.ecommerce.domain.valueobject.StreetAddress;
 import com.venthon.ecommerce.domain.entity.Order;
 import com.venthon.ecommerce.domain.entity.OrderItem;
+import com.venthon.ecommerce.order.persistence.entity.OrderAddressEntity;
 import com.venthon.ecommerce.order.persistence.entity.OrderEntity;
 import com.venthon.ecommerce.order.persistence.entity.OrderItemEntity;
 import org.mapstruct.Mapper;
@@ -24,7 +26,8 @@ public interface OrderPersistenceMapper {
     OrderEntity orderToOrderEntity(Order order);
 
 
-    // @Mapping(target = "id", expression = "java(UUID)")
+    @Mapping(target = "id", expression = "java(UUID.randomUUID())")
+    OrderAddressEntity deliveryAddressToOrderAddressEntity(StreetAddress deliveryAddress);
 
     @Mapping(target = "id.value", source = "id")
     @Mapping(target = "customerId.value", source = "customerId")
@@ -51,16 +54,14 @@ public interface OrderPersistenceMapper {
 
     @Named("mapFailureMessages")
     default String mapFailureMessages(List<String> failureMessages) {
-        return String.join(",", failureMessages);
+        return failureMessages == null ? "" : String.join(",", failureMessages);
     }
 
 
     @Named("mapFailureMessagesToList")
     default List<String> mapFailureMessagesToList(String failureMessages) {
-        return Arrays.stream(failureMessages.split(",")).toList();
+        return failureMessages == null ? List.of("") : Arrays.stream(failureMessages.split(",")).toList();
     }
 
-//    @Mapping(source = "id", target = "id.value")
-//    Customer customerEntityToCustomer(CustomerEntity customerEntity);
 }
 

@@ -3,9 +3,6 @@ package com.venthon.ecommerce.domain.entity;
 import com.example.ecommerce.domain.entity.AggregaeRoot;
 import com.example.ecommerce.domain.valueobject.*;
 import com.venthon.ecommerce.domain.exception.OrderDomainException;
-import com.venthon.ecommerce.domain.valueobject.OrderItemId;
-import com.venthon.ecommerce.domain.valueobject.StreetAddress;
-import com.venthon.ecommerce.domain.valueobject.TrackingId;
 
 import java.util.List;
 import java.util.UUID;
@@ -63,7 +60,7 @@ public class Order extends AggregaeRoot<OrderId> {
     }
 
     private void initializeOrderItems() {
-        long itemCount = 1;
+        int itemCount = 1;
         for (OrderItem item : items) {
             item.initializeOrderItem(super.getId(), new OrderItemId(itemCount++));
         }
