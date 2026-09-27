@@ -18,11 +18,12 @@ import com.venthon.ecommerce.domain.service.OrderDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-@Slf4j
+@Slf4j //For view logging message
 @RequiredArgsConstructor
 public class CreateOrderUseCase {
 
@@ -32,6 +33,7 @@ public class CreateOrderUseCase {
     private final CustomerRepository customerRepository;
     private final BusinessRepository businessRepository;
 
+    @Transactional
     public CreateOrderResult execute(CreateOrderCommand createOrderCommand){
         log.info("executing CreateOrderUseCase: {}", createOrderCommand);
 

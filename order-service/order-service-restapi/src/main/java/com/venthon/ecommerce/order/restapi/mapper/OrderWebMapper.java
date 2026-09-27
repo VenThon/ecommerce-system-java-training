@@ -14,7 +14,7 @@ public interface OrderWebMapper {
     // Source = OrderCreateRequest
     // Target = CreateOrderCommand
 
-    @Mapping(source = "orderAddress",target = "deliveryAddress")
+    @Mapping(source = "orderAddress", target = "deliveryAddress")
     CreateOrderCommand orderCreateRequestToCreateOrderCommand(
             OrderCreateRequest orderCreateRequest
     );

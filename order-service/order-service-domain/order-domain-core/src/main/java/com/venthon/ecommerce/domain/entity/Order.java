@@ -53,6 +53,8 @@ public class Order extends AggregaeRoot<OrderId> {
                 })
                 .reduce(Money.ZERO, Money::add);
 
+//        System.out.println("Price: " + price.amount());
+//        System.out.println("Order Items Total Price: " + orderItemsTotalPrice.amount());
         if (!price.equals(orderItemsTotalPrice)) {
             throw new OrderDomainException("Total price: " + price.getAmount()
                     + " is not equal to order items total price: " + orderItemsTotalPrice.getAmount());

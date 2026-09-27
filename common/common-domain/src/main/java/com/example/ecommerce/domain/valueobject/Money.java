@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-public record Money(BigDecimal amount ) {
+public class Money {
+    private  final BigDecimal amount;
 
     public final static Money ZERO = new Money(BigDecimal.ZERO);
 
@@ -40,7 +41,6 @@ public record Money(BigDecimal amount ) {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
     }
 
-
     // ការកំណត់ចំនួនខ្ទង់ក្រោយក្បៀសសម្រាប់ទឹកប្រាក់ (ជ្រើសរើស២ខ្ទង់)
     private BigDecimal setScale(BigDecimal inputAmount) {
         return inputAmount.setScale(2, RoundingMode.HALF_EVEN);
@@ -48,12 +48,13 @@ public record Money(BigDecimal amount ) {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Money(BigDecimal amount1))) return false;
-        return Objects.equals(setScale(amount), setScale(amount1));
+        if (!(o instanceof Money money)) return false;
+        return Objects.equals(setScale(amount), setScale(money.amount));
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(setScale(amount));
     }
+
 }

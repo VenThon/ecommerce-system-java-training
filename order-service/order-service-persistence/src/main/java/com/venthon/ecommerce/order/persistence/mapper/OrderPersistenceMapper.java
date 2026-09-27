@@ -29,6 +29,11 @@ public interface OrderPersistenceMapper {
     @Mapping(target = "id", expression = "java(UUID.randomUUID())")
     OrderAddressEntity deliveryAddressToOrderAddressEntity(StreetAddress deliveryAddress);
 
+    @Named("mapFailureMessages")
+    default String mapFailureMessages(List<String> failureMessages) {
+        return failureMessages == null ? "" : String.join(",", failureMessages);
+    }
+
     @Mapping(target = "id.value", source = "id")
     @Mapping(target = "customerId.value", source = "customerId")
     @Mapping(target = "businessId.value", source = "businessId")
@@ -51,11 +56,6 @@ public interface OrderPersistenceMapper {
     @Mapping(target = "price.amount", source = "price")
     @Mapping(target = "subTotal.amount", source = "subTotal")
     OrderItem orderItemEntityToOrderItem(OrderItemEntity orderItemEntity);
-
-    @Named("mapFailureMessages")
-    default String mapFailureMessages(List<String> failureMessages) {
-        return failureMessages == null ? "" : String.join(",", failureMessages);
-    }
 
 
     @Named("mapFailureMessagesToList")
