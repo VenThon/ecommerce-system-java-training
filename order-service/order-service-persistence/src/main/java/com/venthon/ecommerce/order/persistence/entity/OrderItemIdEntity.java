@@ -1,18 +1,15 @@
 package com.venthon.ecommerce.order.persistence.entity;
 
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class BusinessIdEntity  implements Serializable {
-
-    private UUID businessId;
-    private UUID productId;
+public class OrderItemIdEntity implements Serializable {
+    private Integer id;
+    private OrderEntity order;
 }

@@ -13,7 +13,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.venthon.ecommerce.order.persistence"
 })
 
-@SpringBootApplication
+//@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = "com.venthon.ecommerce"
+)
 public class OrderServiceApplication {
     static void main(String[] args) {
         SpringApplication.run(OrderServiceApplication.class, args);
