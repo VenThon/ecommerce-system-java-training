@@ -3,7 +3,6 @@ package com.venthon.ecommerce.order.persistence.adapter;
 import com.venthon.ecommerce.domain.entity.Customer;
 import com.venthon.ecommerce.domain.port.output.CustomerRepository;
 import com.venthon.ecommerce.order.persistence.mapper.CustomerPersistenceMapper;
-import com.venthon.ecommerce.order.persistence.mapper.OrderPersistenceMapper;
 import com.venthon.ecommerce.order.persistence.repository.CustomerJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
