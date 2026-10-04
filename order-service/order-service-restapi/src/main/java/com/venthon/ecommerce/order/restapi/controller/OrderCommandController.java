@@ -6,7 +6,6 @@ import com.venthon.ecommerce.domain.usecase.CreateOrderUseCase;
 import com.venthon.ecommerce.order.restapi.dto.OrderCreateRequest;
 import com.venthon.ecommerce.order.restapi.dto.OrderCreateResponse;
 import com.venthon.ecommerce.order.restapi.mapper.OrderWebMapper;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
