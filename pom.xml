@@ -16,6 +16,7 @@
         <module>common</module>
         <module>order-service</module>
         <module>payment-service</module>
+        <module>business-service</module>
     </modules>
 
     <properties>
@@ -84,10 +85,25 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>payment-service-persistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+                <groupId>com.example</groupId>
+                <artifactId>payment-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>business-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>business-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>business-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
