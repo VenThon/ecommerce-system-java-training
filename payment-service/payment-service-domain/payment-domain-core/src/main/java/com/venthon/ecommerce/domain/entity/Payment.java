@@ -2,6 +2,7 @@ package com.venthon.ecommerce.domain.entity;
 
 import com.example.ecommerce.domain.entity.AggregaeRoot;
 import com.example.ecommerce.domain.valueobject.*;
+import com.venthon.ecommerce.domain.exception.PaymentDomainException;
 
 
 import java.time.ZoneId;
@@ -16,7 +17,6 @@ public class Payment extends AggregaeRoot<PaymentId> {
     private PaymentStatus paymentStatus;
     private ZonedDateTime createdAt;
 
-    // Constructor used by Builder
     private Payment(Builder builder) {
         super.setId(builder.id);
         orderId = builder.orderId;
@@ -26,89 +26,56 @@ public class Payment extends AggregaeRoot<PaymentId> {
         createdAt = builder.createdAt;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
 
-    // Validate payment information before processing
     public void validatePayment() {
-
-        // Order must exist
-        if (orderId == null) {
-            throw new IllegalArgumentException(
-                    "Order id cannot be null"
-            );
+        if (orderId == null || customerId == null) {
+            throw new PaymentDomainException("Order id and customer id must be present for a payment");
         }
 
-        // Customer must exist
-        if (customerId == null) {
-            throw new IllegalArgumentException(
-                    "Customer id cannot be null"
-            );
-        }
-
-        // Price must exist
-        if (price == null) {
-            throw new IllegalArgumentException(
-                    "Payment price cannot be null"
-            );
+        if (price == null || !price.isGreaterThanZero()) {
+            throw new PaymentDomainException("Payment price must be greater than zero");
         }
     }
 
-    // Initialize a new payment
     public void initializePayment() {
-
-        // Generate new unique Payment ID
-        super.setId(
-                new PaymentId(UUID.randomUUID())
-        );
-
-        // Set payment creation time
-        this.createdAt =
-                ZonedDateTime.now(ZoneId.of("UTC"));
-    }
-
-    // Update the payment status
-    public void updateStatus(PaymentStatus paymentStatus) {
-
-        if (paymentStatus == null) {
-            throw new IllegalArgumentException(
-                    "Payment status cannot be null"
-            );
+        if (super.getId() != null || paymentStatus != null) {
+            throw new PaymentDomainException("Payment is not in correct status for initialization");
         }
 
-        this.paymentStatus = paymentStatus;
+        setId(new PaymentId(UUID.randomUUID()));
+        createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
+        paymentStatus = PaymentStatus.PENDING;
     }
 
-    // Get Order ID
+    public void updateStatus(PaymentStatus newPaymentStatus) {
+        if (paymentStatus != PaymentStatus.PENDING) {
+            throw new PaymentDomainException("Payment is not in correct state for status update");
+        }
+
+        paymentStatus = newPaymentStatus;
+    }
+
     public OrderId getOrderId() {
         return orderId;
     }
 
-
-    // Get Customer ID
     public CustomerId getCustomerId() {
         return customerId;
     }
 
-
-    // Get payment price
     public Money getPrice() {
         return price;
     }
 
-    // Get current payment status
     public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-
-    // Get payment creation time
     public ZonedDateTime getCreatedAt() {
         return createdAt;
-    }
-
-
-    // Start building Payment object
-    public static Builder builder() {
-        return new Builder();
     }
 
     public static final class Builder {
@@ -121,10 +88,6 @@ public class Payment extends AggregaeRoot<PaymentId> {
 
         private Builder() {
         }
-
-//        public static Builder builder() {
-//            return new Builder();
-//        }
 
         public Builder id(PaymentId val) {
             id = val;

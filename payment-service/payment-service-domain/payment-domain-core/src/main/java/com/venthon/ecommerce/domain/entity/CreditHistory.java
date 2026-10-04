@@ -12,7 +12,6 @@ public class CreditHistory extends BaseEntity<CreditHistoryId> {
     private final Money amount;
     private final TransactionType transactionType;
 
-    // Constructor used by Builder
     private CreditHistory(Builder builder) {
         super.setId(builder.id);
         customerId = builder.customerId;
@@ -20,30 +19,21 @@ public class CreditHistory extends BaseEntity<CreditHistoryId> {
         transactionType = builder.transactionType;
     }
 
-
-    // Get customer id
-    public CustomerId getCustomerId() {
-        return customerId;
-    }
-
-
-    // Get transaction amount
-    public Money getAmount() {
-        return amount;
-    }
-
-    // Get transaction type (DEBIT or CREDIT)
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-
-    // Start building a CreditHistory object
     public static Builder builder() {
         return new Builder();
     }
 
+    public CustomerId getCustomerId() {
+        return customerId;
+    }
 
+    public Money getAmount() {
+        return amount;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
 
     public static final class Builder {
         private CreditHistoryId id;
@@ -54,9 +44,6 @@ public class CreditHistory extends BaseEntity<CreditHistoryId> {
         private Builder() {
         }
 
-        public static Builder builder() {
-            return new Builder();
-        }
 
         public Builder id(CreditHistoryId val) {
             id = val;

@@ -1,49 +1,39 @@
 package com.venthon.ecommerce.domain.service;
 
+import com.example.ecommerce.domain.valueobject.CreditHistoryId;
 import com.example.ecommerce.domain.valueobject.PaymentStatus;
+import com.example.ecommerce.domain.valueobject.TransactionType;
 import com.venthon.ecommerce.domain.entity.CreditEntry;
+import com.venthon.ecommerce.domain.entity.CreditHistory;
 import com.venthon.ecommerce.domain.entity.Payment;
-import com.venthon.ecommerce.domain.event.PaymentCompletedEvent;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 
-// Implementation of PaymentDomainService
+import java.util.UUID;
+
 public class PaymentDomainServiceImpl implements PaymentDomainService {
-
     @Override
-    public PaymentCompletedEvent validateAndInitiatePayment(
-            Payment payment,
-            CreditEntry creditEntry
-    ) {
-
-        //Validate payment information
+    public CreditHistory validateAndInitiatePayment(Payment payment, CreditEntry creditEntry) {
+        // 1. Payment logic
         payment.validatePayment();
-
-        //Deduct customer's credit
-        creditEntry.subtractCreditAmount(
-                payment.getPrice()
-        );
-
-
-        //Initialize payment
         payment.initializePayment();
 
+        // 2. CreditEntry logic → ដកលុយពី credit របស់ customer
+        creditEntry.subtractCreditAmount(payment.getPrice());
 
-        //Payment is successfully completed
-        payment.updateStatus(
-                PaymentStatus.COMPLETED
-        );
+        // 3. Payment success
+        payment.updateStatus(PaymentStatus.COMPLETED);
 
+        // 4. CreditHistory → កត់ត្រាថាបានដកលុយ (DEBIT)
+        return CreditHistory.builder()
+                .id(new CreditHistoryId(UUID.randomUUID()))
+                .customerId(payment.getCustomerId())
+                .amount(payment.getPrice())
+                .transactionType(TransactionType.DEBIT)
+                .build();
+    }
 
-        //Create and return PaymentCompletedEvent
-        // List.of() means there are no failure messages
-        return new PaymentCompletedEvent(
-                payment,
-                ZonedDateTime.now(ZoneId.of("UTC")),
-                List.of()
-        );
+    @Override
+    public void updatePaymentStatus(Payment payment, PaymentStatus newPaymentStatus) {
+        payment.updateStatus(newPaymentStatus);
     }
 }
