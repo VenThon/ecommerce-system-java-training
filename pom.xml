@@ -18,6 +18,7 @@
         <module>payment-service</module>
         <module>business-service</module>
         <module>customer-service</module>
+        <module>getway-service</module>
     </modules>
 
     <properties>
