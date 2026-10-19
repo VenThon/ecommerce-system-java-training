@@ -2,12 +2,15 @@
 
 server:
   port: 0
-
+  forward-headers-strategy: framework
 spring:
   application:
     name: customer-service
   profiles:
     active: dev
+  config:
+    import:
+      - nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
   cloud:
     nacos:
       discovery:

@@ -1,7 +1,7 @@
 # Change order service running port
 server:
-  port: 0
-
+  port: 8550
+  forward-headers-strategy: framework
 spring:
   application:
     name: order-service
@@ -33,3 +33,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9090/realms/ecommerce"

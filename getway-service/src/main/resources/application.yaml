@@ -1,7 +1,24 @@
 server:
   port: 8585
-
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: "http://localhost:9090/realms/ecommerce"
+        registration:
+          ecommerce-postman:
+            provider: keycloak
+            client-id: ecommerce-postman
+            #client-secret:
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8585/login/oauth2/code/ecommerce-postman
+
   application:
     name: gateway-service
   profiles:
@@ -10,13 +27,43 @@ spring:
     gateway:
       server:
         webflux:
+#          routes:
+#            - id: order-service
+#              uri: lb://order-service
+#              predicates:
+#                - Path=/order-service/**
+#              filters:
+#                - RewritePath=/order-service/?(?<segment>.*), /$\{segment}
           discovery:
             locator:
-              enabled: true
+              enabled: true #enable to work with
               lower-case-service-id: true
+          trusted-proxies: ".*"
     nacos:
       discovery:
         namespace: ${spring.profiles.active}
       username: nacos
       password: qwer
       server-addr: 127.0.0.1:8848
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'health,info,gateway'
+  endpoint:
+    gateway:
+      access: read_only
+scalar:
+  sources:
+    - title: Order Service
+      url: /order-service/v3/api-docs
+    - title: Customer Service
+      url: /customer-service/v3/api-docs
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Order Service
+        url: /order-service/v3/api-docs
+      - name: Customer Service
+        url: /customer-service/v3/api-docs

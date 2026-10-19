@@ -32,4 +32,13 @@ public class NacosConfigController {
                 "serviceInfor", nacosConfigProps.getInfo(),
                 "serviceVersion", nacosConfigProps.getVersion());
     }
+
+    @GetMapping("/secured")
+    public Map<String, Object> getSecuredConfig() {
+        return Map.of(
+                "serviceName", nacosConfigProps.getName(),
+                "serviceBasicInfo", nacosConfigProps.getInfo(),
+                "serviceVersion", nacosConfigProps.getVersion()
+        );
+    }
 }
