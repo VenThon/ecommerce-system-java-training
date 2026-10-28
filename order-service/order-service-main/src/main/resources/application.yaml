@@ -20,6 +20,11 @@ spring:
       username: nacos
       password: qwer
       server-addr: 127.0.0.1:8848
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9090/realms/ecommerce"
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -33,8 +38,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: "http://localhost:9090/realms/ecommerce"

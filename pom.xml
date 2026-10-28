@@ -94,6 +94,16 @@
             </dependency>
             <dependency>
                 <groupId>com.example</groupId>
+                <artifactId>payment-service-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>payment-service-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
                 <artifactId>business-domain-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -120,6 +130,11 @@
             <dependency>
                 <groupId>com.example</groupId>
                 <artifactId>customer-service-persistence</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>customer-service-main</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
