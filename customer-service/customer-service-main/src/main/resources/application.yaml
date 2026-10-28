@@ -1,8 +1,9 @@
 #change customer service running port
 
 server:
-  port: 0
+  port: 8551
   forward-headers-strategy: framework
+
 spring:
   application:
     name: customer-service
@@ -13,6 +14,9 @@ spring:
       - nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
   cloud:
     nacos:
+      config:
+        file-extension: yaml
+        namespace: ${spring.profiles.active}
       discovery:
         namespace: ${spring.profiles.active}
       username: nacos
