@@ -1,6 +1,54 @@
 server:
   port: 8585
+
+
 spring:
+  application:
+    name: gateway-service
+  profiles:
+    active: dev
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+#            - id: swagger-ui
+#              uri: http://localhost:8585
+#              predicates:
+#                - Path=/swagger-ui/**
+#              filters:
+#                - RewritePath=/swagger-ui/?(?<segment>.*), /swagger-ui/$\{segment}
+#            - id: vuejs
+#              uri: http://[::1]:5173 #http://localhost:5173
+#              #uri: http://localhost:3000
+#              predicates:
+#                - Path=/**
+#            - id: order-service
+#              uri: lb://order-service # lb=load balance, order-service is application name
+#              predicates:
+#                - Path=/mptc-order-service/**
+#              filters:
+#                - RewritePath=/mptc-order-service/?(?<segment>.*), /$\{segment}
+
+          discovery:
+            locator:
+              enabled: true #enable to work with
+              lower-case-service-id: true
+          trusted-proxies: ".*"
+          default-filters:
+            - SaveSession
+            - TokenRelay=
+
+    nacos:
+      discovery:
+        namespace: ${spring.profiles.active}
+      username: nacos
+      password: qwer
+      server-addr: 127.0.0.1:8848
   security:
     oauth2:
       client:
@@ -19,33 +67,6 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8585/login/oauth2/code/ecommerce-postman
 
-  application:
-    name: gateway-service
-  profiles:
-    active: dev
-  cloud:
-    gateway:
-      server:
-        webflux:
-#          routes:
-#            - id: order-service
-#              uri: lb://order-service
-#              predicates:
-#                - Path=/order-service/**
-#              filters:
-#                - RewritePath=/order-service/?(?<segment>.*), /$\{segment}
-          discovery:
-            locator:
-              enabled: true #enable to work with
-              lower-case-service-id: true
-          trusted-proxies: ".*"
-    nacos:
-      discovery:
-        namespace: ${spring.profiles.active}
-      username: nacos
-      password: qwer
-      server-addr: 127.0.0.1:8848
-
 management:
   endpoints:
     web:
@@ -60,6 +81,9 @@ scalar:
       url: /order-service/v3/api-docs
     - title: Customer Service
       url: /customer-service/v3/api-docs
+    - title: User Service
+      url: /user-service/v3/api-docs
+
 springdoc:
   swagger-ui:
     urls:
@@ -67,3 +91,5 @@ springdoc:
         url: /order-service/v3/api-docs
       - name: Customer Service
         url: /customer-service/v3/api-docs
+      - name: User Service
+        url: /user-service/v3/api-docs

@@ -19,6 +19,7 @@
         <module>business-service</module>
         <module>customer-service</module>
         <module>getway-service</module>
+        <module>user-service</module>
     </modules>
 
     <properties>
@@ -126,8 +127,28 @@
                 <artifactId>payment-service-restapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>user-biz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>user-controller</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>user-entity</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>user-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
-
+            <!-- Spring Cloud -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
