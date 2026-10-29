@@ -40,6 +40,7 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>customer-service-restapi</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.example</groupId>

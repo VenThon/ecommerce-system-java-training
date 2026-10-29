@@ -19,7 +19,7 @@ spring:
       discovery:
         namespace: ${spring.profiles.active}
       username: nacos
-      password: qwer
+      password: nacos
       server-addr: 127.0.0.1:8848
   datasource:
     driver-class-name: org.postgresql.Driver
