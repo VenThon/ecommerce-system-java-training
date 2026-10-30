@@ -22,11 +22,11 @@ spring:
 #                - Path=/swagger-ui/**
 #              filters:
 #                - RewritePath=/swagger-ui/?(?<segment>.*), /swagger-ui/$\{segment}
-#            - id: vuejs
-#              uri: http://[::1]:5173 #http://localhost:5173
-#              #uri: http://localhost:3000
-#              predicates:
-#                - Path=/**
+            - id: vuejs
+              uri: http://[::1]:5173 #http://localhost:5173
+              #uri: http://localhost:3000
+              predicates:
+                - Path=/**
 #            - id: order-service
 #              uri: lb://order-service # lb=load balance, order-service is application name
 #              predicates:
