@@ -20,8 +20,7 @@
         <module>customer-service</module>
         <module>getway-service</module>
         <module>user-service</module>
-        <module>customer-service/customer-service-client</module>
-        <module>common/common-core</module>
+
     </modules>
 
     <properties>

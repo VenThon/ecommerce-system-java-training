@@ -3,6 +3,7 @@ package com.venthon.ecommerce.customer.persistence.adapter;
 import com.example.ecommerce.domain.valueobject.CustomerId;
 import com.venthon.ecommerce.core.PageResponse;
 import com.venthon.ecommerce.customer.domain.dto.CustomerResult;
+import com.venthon.ecommerce.customer.domain.dto.GetCustomerByIdQuery;
 import com.venthon.ecommerce.customer.domain.entity.Customer;
 import com.venthon.ecommerce.customer.domain.port.output.CustomerRepository;
 import com.venthon.ecommerce.customer.persistence.entity.CustomerEntity;
@@ -60,5 +61,11 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
     @Override
     public boolean existsByEmail(String email) {
         return customerJpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<CustomerResult> findCustomerById(GetCustomerByIdQuery query) {
+        return customerJpaRepository.findById(query.customerId())
+                .map(customerPersistenceMapper::toCustomerResult);
     }
 }
