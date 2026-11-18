@@ -21,6 +21,12 @@ spring:
       username: nacos
       password: nacos
       server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8081
+        port: 8719
+      eager: true
+      web-context-unify: false
   datasource:
     driver-class-name: org.postgresql.Driver
     username: ecommerce_usr

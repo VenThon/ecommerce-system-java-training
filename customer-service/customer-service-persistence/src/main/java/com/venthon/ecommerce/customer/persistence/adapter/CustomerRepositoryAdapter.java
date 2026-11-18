@@ -1,12 +1,17 @@
 package com.venthon.ecommerce.customer.persistence.adapter;
 
 import com.example.ecommerce.domain.valueobject.CustomerId;
+import com.venthon.ecommerce.core.PageResponse;
+import com.venthon.ecommerce.customer.domain.dto.CustomerResult;
 import com.venthon.ecommerce.customer.domain.entity.Customer;
 import com.venthon.ecommerce.customer.domain.port.output.CustomerRepository;
 import com.venthon.ecommerce.customer.persistence.entity.CustomerEntity;
 import com.venthon.ecommerce.customer.persistence.mapper.CustomerPersistenceMapper;
 import com.venthon.ecommerce.customer.persistence.repository.CustomerJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,6 +21,23 @@ import java.util.Optional;
 public class CustomerRepositoryAdapter implements CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerPersistenceMapper customerPersistenceMapper;
+
+
+    @Override
+    public PageResponse<CustomerResult> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerEntity> customerEntityPage = customerJpaRepository.findAll(pageable);
+        Page<CustomerResult> customerResultPage = customerEntityPage.map(customerPersistenceMapper::toCustomerResult);
+        return PageResponse.<CustomerResult>builder()
+                .items(customerResultPage.getContent())
+                .page(customerResultPage.getNumber())
+                .size(customerResultPage.getSize())
+                .totalPages(customerResultPage.getTotalPages())
+                .totalElements(customerResultPage.getTotalElements())
+                .hasNext(customerResultPage.hasNext())
+                .build();
+    }
+
 
     @Override
     public Customer save(Customer customer) {

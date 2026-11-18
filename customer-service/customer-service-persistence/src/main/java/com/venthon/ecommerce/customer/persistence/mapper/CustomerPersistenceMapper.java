@@ -2,6 +2,7 @@ package com.venthon.ecommerce.customer.persistence.mapper;
 
 
 import com.example.ecommerce.domain.valueobject.PhoneNumber;
+import com.venthon.ecommerce.customer.domain.dto.CustomerResult;
 import com.venthon.ecommerce.customer.domain.entity.Customer;
 import com.venthon.ecommerce.customer.persistence.entity.CustomerEntity;
 import org.mapstruct.Mapper;
@@ -12,7 +13,7 @@ import org.mapstruct.Named;
 public interface CustomerPersistenceMapper {
     @Mapping(source="id.value", target = "id")
     @Mapping(source="email.value", target = "email")
-    @Mapping(source="phoneNumber.number", target = "phoneNumber")
+    @Mapping(source="phoneNumber.value", target = "phoneNumber")
     CustomerEntity customerToCustomerEntity(Customer customer);
 
 
@@ -25,4 +26,6 @@ public interface CustomerPersistenceMapper {
     default PhoneNumber toPhoneNumber(String phoneNumber) {
         return phoneNumber == null ? null : new PhoneNumber(phoneNumber);
     }
+
+    CustomerResult toCustomerResult(CustomerEntity customerEntity);
 }

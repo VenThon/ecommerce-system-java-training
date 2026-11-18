@@ -1,3 +1,7 @@
+feign:
+  sentinel:
+    enabled: true
+
 server:
   port: 8585
 
@@ -49,6 +53,29 @@ spring:
       username: nacos
       password: qwer
       server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8081
+        port: 8719
+      eager: true
+      web-context-unify: false
+      datasource:
+        sentinel-flow: # name of datasource
+          nacos: # dynamic datasource with nacos
+            server-addr: 127.0.0.1:8848        # link to nacos
+            data-id: sentinel-flow                # data-id of config file in nacos
+            namespace: ${spring.profiles.active}                        # namespace in nacos
+            group-id: DEFAULT_GROUP            # group-id in nacos
+            data-type: json                        # config format in nacos
+            rule-type: flow                # rule type of sentinel (flow control)
+        sentinel-degrade:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            data-id: sentinel-degrade
+            namespace: ${spring.profiles.active}
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
   security:
     oauth2:
       client:

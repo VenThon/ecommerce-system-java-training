@@ -45,4 +45,18 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
                 ));
     }
 
+    @Override
+    public void deleteKeycloakUser(String id) {
+        try (Response response = keycloak.realm(KeycloakAdminClientConfig.REALM_NAME)
+                .users()
+                .delete(id)) {
+            if (response.getStatus() != HttpStatus.NO_CONTENT.value()) {
+                throw new KeycloakException(
+                        HttpStatus.valueOf(response.getStatus()),
+                        "Delete user in keycloak failed with status " + response.getStatus()
+                );
+            }
+        }
+    }
+
 }

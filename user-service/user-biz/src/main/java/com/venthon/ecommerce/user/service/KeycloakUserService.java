@@ -7,6 +7,7 @@ public interface KeycloakUserService {
     void createKeycloakUser(UserRepresentation userRepresentation);
 
     UserRepresentation getKeycloakUserByUsername(String username);
+    void deleteKeycloakUser(String id);
 
 }
 

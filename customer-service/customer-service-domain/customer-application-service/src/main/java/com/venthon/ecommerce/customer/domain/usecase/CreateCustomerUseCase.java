@@ -1,14 +1,19 @@
 package com.venthon.ecommerce.customer.domain.usecase;
 
 
+import com.venthon.ecommerce.customer.client.dto.UserResponse;
+import com.venthon.ecommerce.customer.client.exception.UserServiceUnavailableException;
+import com.venthon.ecommerce.customer.client.feign.UserFeignClient;
 import com.venthon.ecommerce.customer.domain.dto.CreateCustomerCommand;
 import com.venthon.ecommerce.customer.domain.dto.CreateCustomerResult;
 import com.venthon.ecommerce.customer.domain.entity.Customer;
 import com.venthon.ecommerce.customer.domain.event.CustomerCreatedEvent;
 import com.venthon.ecommerce.customer.domain.exception.CustomerAlreadyExistsException;
+import com.venthon.ecommerce.customer.domain.exception.CustomerDomainException;
 import com.venthon.ecommerce.customer.domain.mapper.CustomerDataMapper;
 import com.venthon.ecommerce.customer.domain.port.output.CustomerRepository;
 import com.venthon.ecommerce.customer.domain.service.CustomerDomainService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,10 +30,19 @@ public class CreateCustomerUseCase {
     private final CustomerDomainService customerDomainService; // business rules (from customer-domain-core)
     private final CustomerRepository customerRepository;
     private final CustomerDataMapper customerDataMapper;
+    private final UserFeignClient userFeignClient;
 
     @Transactional // everything below runs in one DB transaction: if anything fails, nothing is saved
     public CreateCustomerResult execute(CreateCustomerCommand createCustomerCommand) {
         log.info("Execute CreateCustomerUseCase : {}", createCustomerCommand);
+        try {
+            UserResponse userResponse = userFeignClient.getById(createCustomerCommand.userId());
+            log.info("User found: {}", userResponse);
+        } catch (FeignException.NotFound e) {
+            throw new CustomerDomainException("User not found");
+        } catch (UserServiceUnavailableException e) {
+            throw new CustomerDomainException(e.getMessage());
+        }
 
         if (customerRepository.existsByUsername(createCustomerCommand.username())) {
             throw new CustomerAlreadyExistsException("Username already exists");

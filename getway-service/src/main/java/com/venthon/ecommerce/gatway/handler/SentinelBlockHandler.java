@@ -26,9 +26,9 @@ public class SentinelBlockHandler implements BlockRequestHandler {
     public Mono<ServerResponse> handleRequest(ServerWebExchange exchange, Throwable ex) {
         if (ex instanceof DegradeException) {
             Map<String, Object> result = new HashMap<>();
-            result.put("code", 502);
+            result.put("code", 503);
             result.put("message", "ISTAD Report: Service Unavailable");
-            return ServerResponse.status(HttpStatus.TOO_MANY_REQUESTS)
+            return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(result);
         }
