@@ -139,6 +139,11 @@
             </dependency>
             <dependency>
                 <groupId>com.example</groupId>
+                <artifactId>customer-service-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.example</groupId>
                 <artifactId>payment-service-restapi</artifactId>
                 <version>${project.version}</version>
             </dependency>
